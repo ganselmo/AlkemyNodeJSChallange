@@ -1,0 +1,29 @@
+{
+  "name": "alkemynodejschallange",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ganselmo/AlkemyNodeJSChallange.git"
+  },
+  "author": "Gerónimo Alejandro Anselmo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ganselmo/AlkemyNodeJSChallange/issues"
+  },
+  "homepage": "https://github.com/ganselmo/AlkemyNodeJSChallange#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "pg": "^8.7.3",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.16",
+    "sequelize-cli": "^6.4.1"
+  }
+}
