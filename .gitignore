@@ -104,4 +104,7 @@ dist
 .tern-port
 
 # Config
-.src/config/
+src/config/
+
+#Docker compose files
+docker-compose.yml
