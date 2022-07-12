@@ -30,8 +30,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       genreId: {
-        type: DataTypes.INTEGER,
+        type: Sequelize.INTEGER,
         allowNull: false,
+        references: {
+          model: {
+            tableName: 'genres'
+          },
+          key: 'id'
+        },
       },
       createdAt: {
         allowNull: false,

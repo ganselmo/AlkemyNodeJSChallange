@@ -6,7 +6,7 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Movie extends Model {
 
-    static associate({Genre,Character}) {
+    static associate({Genre}) {
       this.belongsTo(Genre,
         {
           foreignKey: {
@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER
           }
         })
-      this.belongsToMany(Character, { through: 'characters_movies' })
-    }
+      }
   }
   Movie.init({
     uuid: { type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4 },
