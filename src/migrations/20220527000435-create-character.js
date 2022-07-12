@@ -1,26 +1,36 @@
 'use strict';
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Characters', {
+    await queryInterface.createTable('characters', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      uuid: {
+        allowNull: false,
+        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.UUID
+      },
       img: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       name: {
+        allowNull: false,
         type: Sequelize.STRING
       },
       age: {
-        type: Sequelize.DECIMAL
+        allowNull: false,
+        type: Sequelize.INTEGER
       },
       weigth: {
+        allowNull: false,
         type: Sequelize.DECIMAL
       },
       story: {
+        allowNull: true,
         type: Sequelize.STRING
       },
       createdAt: {
@@ -34,6 +44,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('Characters');
+    await queryInterface.dropTable('characters');
   }
 };

@@ -52,6 +52,7 @@ const register = async (req, res) => {
             password: bcryptjs.hashSync(password,salt)
         });
         const token = signToken(user);
+        // sendEmail here
         return res.status(200).json({
             user,
             token
