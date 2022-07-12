@@ -32,7 +32,11 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      }
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
     });
   },
   async down(queryInterface, Sequelize) {
