@@ -3,6 +3,7 @@ const {
   Model
 } = require('sequelize');
 
+
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
 
@@ -12,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
 
   }
   User.init({
+    uuid: {allowNull: false,defaultValue: DataTypes.UUIDV4,type: DataTypes.UUID},
     firstName: { type: DataTypes.STRING, allowNull: false },
     lastName: { type: DataTypes.STRING, allowNull: false },
     email: { type: DataTypes.STRING, allowNull: false, unique: true },
