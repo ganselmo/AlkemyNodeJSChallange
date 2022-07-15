@@ -6,21 +6,22 @@ const {
 module.exports = (sequelize, DataTypes) => {
   class Movie extends Model {
 
-    static associate({Genre}) {
+    static associate({ Genre }) {
       this.belongsTo(Genre,
         {
           foreignKey: {
-            name: 'genreId',
-            type: DataTypes.INTEGER
+            name: 'genre_uuid',
+            type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique: true
           }
         })
-      }
+    }
   }
   Movie.init({
-    uuid: { type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4 },
+    uuid: { primaryKey: true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique: true },
     img: { type: DataTypes.STRING, allowNull: false },
     title: { type: DataTypes.STRING, allowNull: false },
     creationDate: { type: DataTypes.DATE, allowNull: false },
+    genre_uuid: {   type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique: true },
     rating: { type: DataTypes.INTEGER, allowNull: false }
   }, {
     sequelize,
