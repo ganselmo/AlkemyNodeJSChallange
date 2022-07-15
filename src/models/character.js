@@ -10,11 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate() {
-
+      
     }
   }
   Character.init({
-    uuid: { type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4 },
+    uuid: {primaryKey:true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique:true },
     img: { type: DataTypes.STRING },
     name: { type: DataTypes.STRING, allowNull: false },
     age: { type: DataTypes.INTEGER, allowNull: false },
