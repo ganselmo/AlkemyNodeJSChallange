@@ -3,24 +3,24 @@ module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('characters_movies', {
 
-      character_id: {
-        type: Sequelize.INTEGER,
+      character_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: {
             tableName: 'characters'
           },
-          key: 'id'
+          key: 'uuid'
         },
       },
-      movie_id: {
-        type: Sequelize.INTEGER,
+      movie_uuid: {
+        type: Sequelize.UUID,
         allowNull: false,
         references: {
           model: {
             tableName: 'movies'
           },
-          key: 'id'
+          key: 'uuid'
         },
       },
 
