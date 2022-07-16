@@ -9,8 +9,8 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Movie}) {
-      this.hasMany(Movie)
+    static associate({ Movie }) {
+      this.hasMany(Movie, { sourceKey: 'uuid', foreignKey: 'genre_uuid' })
     }
   }
   Genre.afterValidate
@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   }, {
     sequelize,
-    tableName:'genres',
+    tableName: 'genres',
     modelName: 'Genre',
   });
   return Genre;

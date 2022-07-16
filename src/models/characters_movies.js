@@ -10,13 +10,17 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.Movie.belongsToMany(models.Character, { through: Characters_Movies,foreignKey: 'movie_id'} );
-      models.Character.belongsToMany(models.Movie, { through: Characters_Movies,foreignKey: 'character_id'});
+      models.Movie.belongsToMany(models.Character, { through: Characters_Movies,foreignKey: 'movie_uuid'} );
+      models.Character.belongsToMany(models.Movie, { through: Characters_Movies,foreignKey: 'character_uuid'});
     }
   }
   Characters_Movies.init({
-    character_id: DataTypes.INTEGER,
-    movie_id: DataTypes.INTEGER
+    character_uuid:{
+      primaryKey:true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique:true
+    },
+    movie_uuid:{
+      primaryKey:true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique:true
+    }
   }, {
     sequelize,
      timestamps: false ,

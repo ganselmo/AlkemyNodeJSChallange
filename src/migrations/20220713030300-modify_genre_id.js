@@ -67,7 +67,6 @@ module.exports = {
     }
     catch (error) {
 
-
       return transaction.rollback();
     }
   },
