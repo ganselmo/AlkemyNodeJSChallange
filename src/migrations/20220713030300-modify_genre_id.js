@@ -66,7 +66,6 @@ module.exports = {
       return transaction.commit();
     }
     catch (error) {
-      console.log(error)
 
       return transaction.rollback();
     }

@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Character.init({
     uuid: {primaryKey:true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique:true },
-    img: { type: DataTypes.STRING },
+    imgUrl: { type: DataTypes.STRING },
     name: { type: DataTypes.STRING, allowNull: false },
     age: { type: DataTypes.INTEGER, allowNull: false },
     weigth: { type: DataTypes.DECIMAL, allowNull: false },

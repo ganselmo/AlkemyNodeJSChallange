@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Movie.init({
     uuid: { primaryKey: true, type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique: true },
-    img: { type: DataTypes.STRING, allowNull: false },
+    imgUrl: { type: DataTypes.STRING, allowNull: false },
     title: { type: DataTypes.STRING, allowNull: false },
     creationDate: { type: DataTypes.DATE, allowNull: false },
     genre_uuid: {   type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4, unique: true },
