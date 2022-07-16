@@ -13,7 +13,7 @@ module.exports = {
         defaultValue: Sequelize.UUIDV4,
         type: Sequelize.UUID
       },
-      img: {
+      imgUrl: {
         allowNull: false,
         type: Sequelize.STRING
       },

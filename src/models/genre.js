@@ -13,10 +13,34 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Movie)
     }
   }
+  Genre.afterValidate
   Genre.init({
-    uuid:{ type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4 },
-    img:{ type: DataTypes.STRING, allowNull: false },
-    name:{ type: DataTypes.STRING, allowNull: false }
+    uuid: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true
+    },
+    imgUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull:true,
+        notEmpty:true,
+        isUrl: true
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique:true,
+      validate: {
+        notNull:true,
+        notEmpty:true,
+        isAlpha: true,
+      }
+    }
   }, {
     sequelize,
     tableName:'genres',
