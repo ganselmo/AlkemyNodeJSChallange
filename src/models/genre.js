@@ -9,6 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
+
+    toJSON() {
+      return { ...this.get(),  createdAt: undefined, updatedAt: undefined }
+    }
     static associate({ Movie }) {
       this.hasMany(Movie, { sourceKey: 'uuid', foreignKey: 'genre_uuid' })
     }
@@ -26,18 +30,18 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        notNull:true,
-        notEmpty:true,
+        notNull: true,
+        notEmpty: true,
         isUrl: true
       }
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique:true,
+      unique: true,
       validate: {
-        notNull:true,
-        notEmpty:true,
+        notNull: true,
+        notEmpty: true,
         isAlpha: true,
       }
     }

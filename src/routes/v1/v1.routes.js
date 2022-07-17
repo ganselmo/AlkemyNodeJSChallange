@@ -7,7 +7,7 @@ const { verifyToken } = require("../../middlewares/verifyToken.middleware");
 const { containsToken } = require("../../middlewares/containsToken.middleware");
 
 router.use("/api/v1/auth",authRoutes);
-router.use("/api/v1/movies",moviesRoutes);
+router.use("/api/v1/movies",containsToken,verifyToken,moviesRoutes);
 router.use("/api/v1/genres",containsToken,verifyToken,genreRoutes);
 
 module.exports= router;
