@@ -1,11 +1,20 @@
 const { Character } = require('../models')
+const { Movie } = require('../models')
 const { Genre } = require('../models')
-
 const errorFactory = require('../errors/ErrorFactory')
 
 const getCharacters = async (req, res) => {
     try {
-        const characters = await Character.findAll()
+        const characters = await Character.findAll({
+            include: [{
+                model: Movie,
+                as: "movies",
+                include: {
+                    model: Genre,
+                    as: "genre",
+                }
+            }]
+        })
         if (!characters) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'No characters Found', uuid }, res)
         }
@@ -19,7 +28,17 @@ const getCharacters = async (req, res) => {
 const getCharacter = async (req, res) => {
     try {
         const { uuid } = req.params;
-        const character = await Character.findByPk(uuid)
+        const character = await Character.findByPk(uuid,
+            {
+                include: [{
+                    model: Movie,
+                    as: "movies",
+                    include: {
+                        model: Genre,
+                        as: "genre",
+                    }
+                }]
+            })
         if (!character) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'Character not found', uuid }, res)
         }
@@ -30,9 +49,16 @@ const getCharacter = async (req, res) => {
 }
 const createCharacter = async (req, res) => {
     try {
-        const { imgUrl,name, age, weight, story } = req.body
-     
-        const character = await Character.create({ imgUrl,name, age, weight, story })
+        const { imgUrl, name, age, weight, story } = req.body
+        const { movies } = req.body
+        const character = await Character.create({ imgUrl, name, age, weight, story })
+
+        if (movies) {
+            const moviesUUIDs = movies.map(movie =>
+                movie.uuid
+            )
+            character.setMovies(moviesUUIDs)
+        }
         character.save()
         return res.status(201).json(character)
 
@@ -45,17 +71,25 @@ const createCharacter = async (req, res) => {
 const updateCharacter = async (req, res) => {
     try {
         const { uuid } = req.params;
-        const { imgUrl,name, age, weight, story} = req.body
+        const { imgUrl, name, age, weight, story } = req.body
+        const { movies } = req.body
         const character = await Character.findByPk(uuid)
         if (!character) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'Character not found', uuid }, res)
         }
-        const [updated] = await Character.update({ imgUrl,name, age, weight, story }, {
+        let moviesUpdated;
+        if (movies) {
+            const moviesUUIDs = movies.map(movie =>
+                movie.uuid
+            )
+            moviesUpdated = await character.setMovies(moviesUUIDs)
+        }
+        const [updated] = await Character.update({ imgUrl, name, age, weight, story }, {
             where: {
                 uuid
             }
         })
-        if (!updated) {
+        if (!updated && !moviesUpdated) {
             return errorFactory.createError({ name: 'ServerError', message: 'Character was not updated', uuid }, res)
         }
         //RFC 5789
@@ -88,4 +122,21 @@ const deleteCharacter = async (req, res) => {
 }
 
 
-module.exports = { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter }
+const getCharacterMovies = async (req, res) => {
+    const { uuid } = req.params;
+    const character = await Character.findByPk(uuid, {
+        include: [
+            {
+                model: Movie,
+                as: "movies"
+            }]
+    });
+
+    if (!character) {
+        return errorFactory.createError({ name: 'NotFoundError', message: 'Character not found', uuid }, res)
+    }
+
+    return res.status(200).json(character.movies);
+}
+
+module.exports = { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies }

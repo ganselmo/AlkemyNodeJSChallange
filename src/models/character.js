@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Character extends Model {
     
     toJSON() {
-      return { ...this.get(), genre_uuid: undefined, createdAt: undefined, updatedAt: undefined }
+      return { ...this.get(), genre_uuid: undefined, createdAt: undefined, updatedAt: undefined ,Characters_Movies:undefined}
     }
     
     static associate() {
