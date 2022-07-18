@@ -1,5 +1,5 @@
 const Router = require("express");
-const { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter } = require("../../controllers/character.controller");
+const { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies } = require("../../controllers/character.controller");
 
 const router = Router();
 
@@ -8,5 +8,7 @@ router.get('/:uuid',getCharacter);
 router.post('/',createCharacter);
 router.patch('/:uuid',updateCharacter);
 router.delete('/:uuid',deleteCharacter);
+
+router.get('/:uuid/movies',getCharacterMovies);
 
 module.exports = router;

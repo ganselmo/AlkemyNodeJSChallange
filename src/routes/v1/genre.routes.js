@@ -9,7 +9,7 @@ router.post('/',createGenre);
 router.patch('/:uuid',updateGenre);
 router.delete('/:uuid',deleteGenre);
 
-router.get('/movies/:uuid',getGenreMovies);
+router.get('/:uuid/movies',getGenreMovies);
 
 module.exports = router;
 
