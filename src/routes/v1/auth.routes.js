@@ -21,6 +21,7 @@ router.post('/register', [
     check('lastName', 'lastName.required').not().isEmpty(),
     check('password', 'password.too_short').isLength({ min: 8 }),
     check('password', 'password.too_long').isLength({ max: 20 }),
+    check('password', 'password.is_weak').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/),
     validationError
 ], register);
 
