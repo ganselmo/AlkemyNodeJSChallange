@@ -5,7 +5,8 @@ const faker = require('faker');
 module.exports = {
   async up(queryInterface, Sequelize) {
 
-    const genres = [...Array(100)].map((genre)=>{
+
+    const genres = [...Array(11)].map((genre)=>{
       genre = {}
       genre.uuid= Sequelize.literal('uuid_generate_v4()');
       genre.name= faker.company.catchPhraseAdjective();
@@ -14,8 +15,12 @@ module.exports = {
       genre.updatedAt=new Date();
       return genre
     })
-
-    await queryInterface.bulkInsert('genres', genres, {});
+    try {
+      await queryInterface.bulkInsert('genres', genres, {});
+    } catch (error) {
+      console.log(error)
+    }
+   
   },
 
   async down(queryInterface, Sequelize) {
