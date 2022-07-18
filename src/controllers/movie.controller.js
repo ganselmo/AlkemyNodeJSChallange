@@ -1,6 +1,6 @@
 const { Movie } = require('../models')
 const { Genre } = require('../models')
-
+const { Character } = require('../models')
 const errorFactory = require('../errors/ErrorFactory')
 const getMovies = async (req, res) => {
     try {
@@ -8,6 +8,11 @@ const getMovies = async (req, res) => {
             {
                 include: [{
                     model: Genre,
+                    as: "genre"
+                },
+                {
+                    model: Character,
+                    as: "characters"
                 }]
             }
         )
@@ -28,6 +33,11 @@ const getMovie = async (req, res) => {
             {
                 include: [{
                     model: Genre,
+                    as: "genre"
+                },
+                {
+                    model: Character,
+                    as: "characters"
                 }]
             })
         if (!movie) {
@@ -41,11 +51,23 @@ const getMovie = async (req, res) => {
 const createMovie = async (req, res) => {
     try {
         const { title, creationDate, genre_uuid, rating, imgUrl } = req.body
+
+        const { characters } = req.body
+
+
         const genre = await Genre.findByPk(genre_uuid)
         if (!genre) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'Genre not found', genre_uuid }, res)
         }
         const movie = await Movie.create({ title, creationDate, genre_uuid, rating, imgUrl })
+
+        if (characters) {
+
+            const characterUUIDs = characters.map(character =>
+                character.uuid
+            )
+            movie.setCharacters(characterUUIDs)
+        }
         movie.save()
         return res.status(201).json(movie)
 
@@ -59,6 +81,8 @@ const updateMovie = async (req, res) => {
     try {
         const { uuid } = req.params;
         const { title, creationDate, genre_uuid, rating, imgUrl } = req.body
+        const { characters } = req.body
+
         const movie = await Movie.findByPk(uuid)
         if (!movie) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'Movie not found', uuid }, res)
@@ -70,12 +94,19 @@ const updateMovie = async (req, res) => {
                 return errorFactory.createError({ name: 'NotFoundError', message: 'Genre not found', uuid }, res)
             }
         }
+        let charactersUpdated;
+        if (characters) {
+            const characterUUIDs = characters.map(character =>
+                character.uuid
+            )
+            charactersUpdated = movie.setCharacters(characterUUIDs)
+        }
         const [updated] = await Movie.update({ title, creationDate, genre_uuid, rating, imgUrl }, {
             where: {
                 uuid
             }
         })
-        if (!updated) {
+        if (!updated && !charactersUpdated) {
             return errorFactory.createError({ name: 'ServerError', message: 'Movie was not updated', uuid }, res)
         }
         //RFC 5789
@@ -106,6 +137,22 @@ const deleteMovie = async (req, res) => {
         return errorFactory.createError(error, res)
     }
 }
+const getMovieCharacters = async (req, res) => {
 
+    const { uuid } = req.params;
+    const movie = await Movie.findByPk(uuid, {
+        include: [
+        {
+            model: Character,
+            as: "characters"
+        }]
+    });
 
-module.exports = { getMovies, getMovie, createMovie, updateMovie, deleteMovie }
+    if (!movie) {
+        return errorFactory.createError({ name: 'NotFoundError', message: 'Movie not found', uuid }, res)
+    }
+
+    return res.status(200).json(movie.characters);
+}
+
+module.exports = { getMovies, getMovie, createMovie, updateMovie, deleteMovie, getMovieCharacters }
