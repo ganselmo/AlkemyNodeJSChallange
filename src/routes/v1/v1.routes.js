@@ -11,4 +11,5 @@ router.use("/api/v1/auth",authRoutes);
 router.use("/api/v1/genres",containsToken,verifyToken,genreRoutes);
 router.use("/api/v1/movies",containsToken,verifyToken,moviesRoutes);
 router.use("/api/v1/characters",containsToken,verifyToken,caracterRoutes);
+
 module.exports= router;
