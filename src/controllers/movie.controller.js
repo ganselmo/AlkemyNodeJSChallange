@@ -2,18 +2,26 @@ const { Movie } = require('../models')
 const { Genre } = require('../models')
 const { Character } = require('../models')
 const errorFactory = require('../errors/ErrorFactory')
+const { buildWhereClause } = require("../helpers/queryToModel.helper")
+const { Op } = require('sequelize')
 const getMovies = async (req, res) => {
     try {
+
+        const { title, idGenre, order } = req.query
+
+        const whereClause = buildWhereClause([{ name: "title", value: title, op: "substring" }, { name: "genre_uuid", value: idGenre, op: "eq" }])
+
+        const orderClause = (order==="ASC"||order==="DESC")?[['creationDate', order]]:undefined
+
         const movies = await Movie.findAll(
             {
-                include: [{
-                    model: Genre,
-                    as: "genre"
+                attributes: ['imgUrl', 'title', 'creationDate'],
+                where: {
+                    [Op.and]:
+                        whereClause
+
                 },
-                {
-                    model: Character,
-                    as: "characters"
-                }]
+                order:orderClause,
             }
         )
         if (!movies) {
@@ -22,7 +30,6 @@ const getMovies = async (req, res) => {
         return res.status(200).json(movies)
 
     } catch (error) {
-        console.log(error)
         return errorFactory.createError(error, res)
     }
 }
@@ -72,7 +79,6 @@ const createMovie = async (req, res) => {
         return res.status(201).json(movie)
 
     } catch (error) {
-        console.log(error)
         return errorFactory.createError(error, res)
 
     }
@@ -142,10 +148,10 @@ const getMovieCharacters = async (req, res) => {
     const { uuid } = req.params;
     const movie = await Movie.findByPk(uuid, {
         include: [
-        {
-            model: Character,
-            as: "characters"
-        }]
+            {
+                model: Character,
+                as: "characters"
+            }]
     });
 
     if (!movie) {

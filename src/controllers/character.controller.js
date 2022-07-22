@@ -2,18 +2,35 @@ const { Character } = require('../models')
 const { Movie } = require('../models')
 const { Genre } = require('../models')
 const errorFactory = require('../errors/ErrorFactory')
+const { Op } = require("sequelize");
+
+const { buildWhereClause} = require("../helpers/queryToModel.helper")
 
 const getCharacters = async (req, res) => {
     try {
+        const { name, age, weight, idMovie } = req.query
+
+        const whereClause = buildWhereClause([{ name: "name", value: name, op: "substring" }, { name: "age", value: age, op: "eq" }, { name: "weight", value: weight, op: "eq" }])
+
+
+        const joinClause = (idMovie) ? {
+            model: Movie,
+            as: "movies",
+            where: {
+                uuid: idMovie
+            },
+            attributes: []
+        } : undefined
+
+
         const characters = await Character.findAll({
-            include: [{
-                model: Movie,
-                as: "movies",
-                include: {
-                    model: Genre,
-                    as: "genre",
-                }
-            }]
+            attributes: ['imgUrl', 'name'],
+            where: {
+                [Op.and]:
+                    whereClause
+
+            },
+            include: joinClause
         })
         if (!characters) {
             return errorFactory.createError({ name: 'NotFoundError', message: 'No characters Found', uuid }, res)
@@ -21,7 +38,6 @@ const getCharacters = async (req, res) => {
         return res.status(200).json(characters)
 
     } catch (error) {
-        console.log(error)
         return errorFactory.createError(error, res)
     }
 }
@@ -63,7 +79,6 @@ const createCharacter = async (req, res) => {
         return res.status(201).json(character)
 
     } catch (error) {
-        console.log(error)
         return errorFactory.createError(error, res)
 
     }
@@ -138,5 +153,7 @@ const getCharacterMovies = async (req, res) => {
 
     return res.status(200).json(character.movies);
 }
+
+
 
 module.exports = { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies }
