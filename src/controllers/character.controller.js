@@ -155,33 +155,5 @@ const getCharacterMovies = async (req, res) => {
 }
 
 
-const getCharactersByName = async (req, res) => {
-    const { name } = req.query
 
-    if (name) {
-        const characters = await Character.findAll({
-            include: [{
-                model: Movie,
-                as: "movies",
-                include: {
-                    model: Genre,
-                    as: "genre",
-                },
-
-            }],
-            where: {
-                name: {
-                    [Op.substring]: name
-                }
-            }
-        }
-        )
-        if (!characters) {
-            return errorFactory.createError({ name: 'NotFoundError', message: 'No characters Found', uuid }, res)
-        }
-        return res.status(200).json(characters);
-    } else {
-        return res.sendStatus(400);
-    }
-}
-module.exports = { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies, getCharactersByName }
+module.exports = { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies }

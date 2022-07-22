@@ -1,5 +1,5 @@
 const Router = require("express");
-const { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies,getCharactersByName } = require("../../controllers/character.controller");
+const { getCharacters, getCharacter, createCharacter, updateCharacter, deleteCharacter, getCharacterMovies } = require("../../controllers/character.controller");
 
 const router = Router();
 
