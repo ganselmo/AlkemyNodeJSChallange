@@ -8,6 +8,9 @@ const { sequelize } = require('../src/models');
 const genreTests = require('./models/genre.test');
 const authTests = require('./models/auth.test');
 
+const charactersTests = require('./models/characters.test');
+const moviesTests = require('./models/movies.test');
+const combinedTests = require ('./models/combined.test')
 
 const excuteTest = async () => {
 
@@ -22,6 +25,7 @@ const excuteTest = async () => {
         let token
         before(async () => {
             await sequelize.sync({ force: true });
+            
         })
         
         before(async () => {
@@ -31,6 +35,8 @@ const excuteTest = async () => {
     
         });
 
+
+        
         it("should get new Token", async () => {
             expect(token).to.be.not.empty
         })
@@ -42,13 +48,17 @@ const excuteTest = async () => {
             await genreTests(server, token)
         })
         
-        // it("should execute Movies Api with the token", async () => {
-        //     await moviesTests(server, token)
-        // })
+        it("should execute Characters Api with the token", async () => {
+            await charactersTests(server, token)
+        })
+        
+        it("should execute Movies Api with the token", async () => {
+            await moviesTests(server, token)
+        })
+        it("should execute all Api combined in several scenarios", async () => {
+            await combinedTests(sequelize,server, token)
+        })
 
-        // it("should execute Characters Api with the token", async () => {
-        //     await charactersTests(server, token)
-        // })
 
 
         

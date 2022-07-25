@@ -7,8 +7,6 @@ module.exports = genreTests = async(server,token) => {
     describe('Genres API', async () => {
 
        
-    
-
         it('Shows all genres and they are empty', async () => {
             // console.log(token)
             const { body, status } = await request(server).get('/api/v1/genres').set({ 'x-auth-token': token });
@@ -20,7 +18,7 @@ module.exports = genreTests = async(server,token) => {
         it('Post one genre', async () => {
 
             const genre = {
-                "imgUrl": "https://ct.cosm",
+                "imgUrl": "https://i.blogs.es/4c3a93/650_1000_cartel-interstellar/1366_2000.jpg",
                 "name": "Suspenso"
             }
             const { body, status } = await request(server).post('/api/v1/genres').set({ 'x-auth-token': token }).send(genre);
@@ -41,7 +39,7 @@ module.exports = genreTests = async(server,token) => {
         it('Not to post name with numbers', async () => {
 
             const genre = {
-                "imgUrl": "https://ct.cosm",
+                "imgUrl": "https://i.blogs.es/4c3a93/650_1000_cartel-interstellar/1366_2000.jpg",
                 "name": "Suspens2o"
             }
             const { body, status } = await request(server).post('/api/v1/genres').set({ 'x-auth-token': token }).send(genre);
@@ -63,7 +61,7 @@ module.exports = genreTests = async(server,token) => {
         it('Not to Post a duplicated field genre', async () => {
 
             const genre = {
-                "imgUrl": "https://ct.cosm",
+                "imgUrl": "https://i.blogs.es/4c3a93/650_1000_cartel-interstellar/1366_2000.jpg",
                 "name": "Suspenso"
             }
             const { body, status } = await request(server).post('/api/v1/genres').set({ 'x-auth-token': token }).send(genre);
@@ -100,13 +98,14 @@ module.exports = genreTests = async(server,token) => {
             const { body, status } = await request(server).get('/api/v1/genres/' + genreToBeFound.uuid).set({ 'x-auth-token': token });
             expect(status).to.equal(200);
             expect(body.name).to.equal("Accion")
+            expect(body.imgUrl).to.equal("https://i.blogs.es/4c3a93/650_1000_cartel-interstellar/1366_2000.jpg")
         });
 
         let newGenre
         it('Delete genre', async () => {
 
             const genreToDelete = {
-                "imgUrl": "https://ct.cosm",
+                "imgUrl": "https://i.blogs.es/4c3a93/650_1000_cartel-interstellar/1366_2000.jpg",
                 "name": "Aborrrarse"
             }
             const { body: genre, status: postStatus } = await request(server).post('/api/v1/genres').set({ 'x-auth-token': token }).send(genreToDelete);
