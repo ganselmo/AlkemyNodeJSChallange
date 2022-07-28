@@ -7,7 +7,7 @@
     "dev": "node src/index.js",
     "dev:watch": "nodemon src/index.js",
     "test": "mocha tests/index.js",
-    "test:watch":"mocha tests/index.js  --watch",
+    "test:watch": "mocha tests/index.js  --watch",
     "coverage": "nyc npm run test"
   },
   "repository": {
@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/ganselmo/AlkemyNodeJSChallange#readme",
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
