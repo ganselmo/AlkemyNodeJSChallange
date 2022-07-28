@@ -2,18 +2,14 @@
 module.exports = {
   async up(queryInterface, Sequelize) {
     await queryInterface.createTable('characters', {
-      id: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
+
       uuid: {
+        primaryKey: true,
         allowNull: false,
         defaultValue: Sequelize.UUIDV4,
         type: Sequelize.UUID
       },
-      img: {
+      imgUrl: {
         allowNull: false,
         type: Sequelize.STRING
       },

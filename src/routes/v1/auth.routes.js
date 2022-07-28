@@ -1,8 +1,8 @@
 const Router = require("express");
-const { login, register } = require("../controllers/auth.controller");
+const { login, register } = require("../../controllers/auth.controller");
 
 const { check } = require('express-validator');
-const { validationError } = require("../middlewares/validationError.middleware");
+const { validationError } = require("../../middlewares/validationError.middleware");
 
 const router = Router();
 
@@ -21,6 +21,7 @@ router.post('/register', [
     check('lastName', 'lastName.required').not().isEmpty(),
     check('password', 'password.too_short').isLength({ min: 8 }),
     check('password', 'password.too_long').isLength({ max: 20 }),
+    check('password', 'password.is_weak').matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[#$@!%&*?])[A-Za-z\d#$@!%&*?]{8,20}$/),
     validationError
 ], register);
 

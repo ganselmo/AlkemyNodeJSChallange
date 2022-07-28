@@ -1,22 +1,22 @@
 const express = require('express');
-const cors = require('cors');
 
-const authRoutes = require('./routes/auth.routes');
-const moviesRoutes = require('./routes/movies.routes');
-// import moviesRoutes from './routes/movies.routes.js'
-// import characterRoutes from './routes/character.routes.js'
-// import genreRoutes from './routes/genre.routes.js'
+const { NODE_ENV } = process.env;
+const cors = require('cors');
+const routerV1 = require('./routes/v1/v1.routes')
+
+
 
 const app = express()
 
 //middlewares
 app.use(cors());
 app.use(express.json())
-
+if (NODE_ENV === "development") {
+    const morgan = require('morgan')
+    app.use(morgan('combined'))
+}
 //routers
-app.use("/api/auth",authRoutes);
-app.get("/api/movies",moviesRoutes)
-// app.use(routes);
-// app.use(taskRoutes);
+app.use(routerV1)
+
 
 module.exports = app

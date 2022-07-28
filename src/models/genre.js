@@ -9,17 +9,45 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({Movie}) {
-      this.hasMany(Movie)
+
+    toJSON() {
+      return { ...this.get(),  createdAt: undefined, updatedAt: undefined }
+    }
+    static associate({ Movie }) {
+      this.hasMany(Movie, { sourceKey: 'uuid', foreignKey: 'genre_uuid' })
     }
   }
+  Genre.afterValidate
   Genre.init({
-    uuid:{ type: DataTypes.UUID, allowNull: false, defaultValue: DataTypes.UUIDV4 },
-    img:{ type: DataTypes.STRING, allowNull: false },
-    name:{ type: DataTypes.STRING, allowNull: false }
+    uuid: {
+      primaryKey: true,
+      type: DataTypes.UUID,
+      allowNull: false,
+      defaultValue: DataTypes.UUIDV4,
+      unique: true
+    },
+    imgUrl: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+        isUrl: true
+      }
+    },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: {
+        notNull: true,
+        notEmpty: true,
+        isAlpha: true,
+      }
+    }
   }, {
     sequelize,
-    tableName:'genres',
+    tableName: 'genres',
     modelName: 'Genre',
   });
   return Genre;
