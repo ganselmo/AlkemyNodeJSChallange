@@ -2,13 +2,14 @@ const { expect } = require('chai');
 const request = require('supertest');
 
 module.exports = authTests = async (server) => {
+    const startingEmail= "test@test.com"
     describe('Auth API', async () => {
 
         it("should register a user", async () => {
             const userToRegister = {
                 "firstName": "test",
                 "lastName": "auth",
-                "email": "test1@authTest.com",
+                "email": startingEmail,
                 "password": "AuthTest123!"
             }
             const {status,body} = await request(server).post('/api/v1/auth/register').send(userToRegister);
@@ -39,7 +40,7 @@ module.exports = authTests = async (server) => {
             const userToRegister ={
                 "firstName":"test",
                 "lastName":"auth",
-                "email":"test1@authTest.com",
+                "email":startingEmail,
                 "password":"AuthTest1232!"
             }
             const {status,body} = await request(server).post('/api/v1/auth/register').send(userToRegister);
@@ -82,7 +83,7 @@ module.exports = authTests = async (server) => {
         it("shoud login a user", async ()  => {
 
             const userToLogin = {
-                "email": "test1@authTest.com",
+                "email": startingEmail,
                 "password": "AuthTest123!"
             }
             const {status,body} = await request(server).post('/api/v1/auth/login').send(userToLogin);
