@@ -4,6 +4,7 @@ const { signToken } = require("../helpers/auth.helper.js");
 const { User } = require("../models");
 const bcryptjs = require("bcryptjs");
 const emailExists  = require("../helpers/userValidator.js");
+const { sendWelcomeEmail } = require("../helpers/email.helper.js");
 
 const login = async (req, res) => {
 
@@ -52,7 +53,7 @@ const register = async (req, res) => {
             password: bcryptjs.hashSync(password,salt)
         });
         const token = signToken(user);
-        // sendEmail here
+        await sendWelcomeEmail(email,firstName,lastName)
         return res.status(200).json({
             user,
             token
