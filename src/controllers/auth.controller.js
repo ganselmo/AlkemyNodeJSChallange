@@ -5,7 +5,7 @@ const { User } = require("../models");
 const bcryptjs = require("bcryptjs");
 const emailExists  = require("../helpers/userValidator.js");
 const { sendWelcomeEmail } = require("../helpers/email.helper.js");
-
+const errorFactory = require('../errors/ErrorFactory')
 const login = async (req, res) => {
 
 
@@ -17,11 +17,11 @@ const login = async (req, res) => {
               }
         })
         if(!user){
-            return res.status(400).json({errors:{msg:"user.not_found"}})
+            return res.status(401).json({errors:{msg:"user.auth_failed"}})
         }
         const validatePassword = bcryptjs.compareSync(password,user.password)
         if(!validatePassword){
-            return res.status(400).json({errors:{msg:"user.password_invalid"}})
+            return res.status(401).json({errors:{msg:"user.auth_failed"}})
         }
 
 
@@ -31,7 +31,7 @@ const login = async (req, res) => {
             token
         })
     } catch (e) {
-        res.status(500).json({ msg: e.message })
+        return errorFactory.createError(error, res)
     }
 }
 
@@ -58,8 +58,8 @@ const register = async (req, res) => {
             user,
             token
         })
-    } catch (e) {
-        res.status(500).json({ msg: e.message })
+    } catch (error) {
+        return errorFactory.createError(error, res)
 
     }
 

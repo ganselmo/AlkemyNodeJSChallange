@@ -7,9 +7,9 @@ const { Op } = require('sequelize')
 const getMovies = async (req, res) => {
     try {
 
-        const { title, idGenre, order } = req.query
+        const { title, genre, order } = req.query
 
-        const whereClause = buildWhereClause([{ name: "title", value: title, op: "substring" }, { name: "genre_uuid", value: idGenre, op: "eq" }])
+        const whereClause = buildWhereClause([{ name: "title", value: title, op: "substring" }, { name: "genre_uuid", value: genre, op: "eq" }])
 
         const orderClause = (order==="ASC"||order==="DESC")?[['creationDate', order]]:undefined
 
