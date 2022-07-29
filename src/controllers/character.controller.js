@@ -8,16 +8,16 @@ const { buildWhereClause} = require("../helpers/queryToModel.helper")
 
 const getCharacters = async (req, res) => {
     try {
-        const { name, age, weight, idMovie } = req.query
+        const { name, age, weight, movie } = req.query
 
         const whereClause = buildWhereClause([{ name: "name", value: name, op: "substring" }, { name: "age", value: age, op: "eq" }, { name: "weight", value: weight, op: "eq" }])
 
 
-        const joinClause = (idMovie) ? {
+        const joinClause = (movie) ? {
             model: Movie,
             as: "movies",
             where: {
-                uuid: idMovie
+                uuid: movie
             },
             attributes: []
         } : undefined

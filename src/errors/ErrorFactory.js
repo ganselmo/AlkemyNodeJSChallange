@@ -8,7 +8,6 @@ class ErrorFactory {
         this.errorMap = errorMap;
     }
 
-
     createError(error,res) {
 
         let newError;
@@ -18,7 +17,6 @@ class ErrorFactory {
         else{
             newError = new ServerError(error)
         }
-
         newError.handleError(res)
 
     }
